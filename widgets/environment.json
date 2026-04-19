@@ -1,1 +1,1 @@
-[{"values":["docker"],"name":"environment"},{"values":["http://fashionhub:4000/fashionhub/"],"name":"base_url"},{"values":["v24.14.1"],"name":"node_version"}]
+[{"values":["production"],"name":"environment"},{"values":["https://pocketaces2.github.io/fashionhub/"],"name":"base_url"},{"values":["v20.20.2"],"name":"node_version"}]
