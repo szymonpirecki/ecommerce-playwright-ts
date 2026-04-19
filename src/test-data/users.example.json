@@ -1,0 +1,5 @@
+[
+  { "username": "standard_user", "password": "your_password", "role": "standard" },
+  { "username": "admin_user",    "password": "your_password", "role": "admin" },
+  { "username": "locked_user",   "password": "your_password", "role": "locked" }
+]

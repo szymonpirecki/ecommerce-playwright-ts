@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# TypeScript build output
+dist/
+
+# Playwright outputs
+playwright-report/
+test-results/
+results/
+
+# Allure outputs
+allure-results/
+allure-report/
+
+# Environment secrets — never commit the real .env
+.env
+
+# Test credentials — never commit real user data
+src/test-data/users.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.claude/
+CLAUDE.md
+*.swp
