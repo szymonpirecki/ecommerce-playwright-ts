@@ -1,6 +1,5 @@
 # ecommerce-playwright-ts
 
-
 ![Tests](https://github.com/szymonpirecki/ecommerce-playwright-ts/actions/workflows/test.yml/badge.svg)
 
 Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e-commerce app, built as a QA Engineer portfolio project.
