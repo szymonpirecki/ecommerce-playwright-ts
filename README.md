@@ -12,7 +12,7 @@ Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e
 
 **Test execution**
 - Runs across Chromium, Firefox, and WebKit in fully parallel mode
-- CI-aware config: retries, worker count, and JUnit reporter enabled only in CI (`process.env.CI`)
+- CI-aware config: retries and worker count adjusted based on `process.env.CI`
 - Traces, screenshots, and videos captured automatically on failure
 
 **Reporting**
@@ -25,7 +25,7 @@ Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e
 
 **Deployment**
 - App and test runner run as separate Docker Compose services — the app must pass a health check before tests start
-- GitHub Actions pipeline (push/PR to main) runs the same Docker Compose flow, with `users.json` injected from a repository secret
+- GitHub Actions pipeline (push/PR to main) runs two jobs: Docker Compose flow against the local environment, and a per-browser matrix against production — both inject `users.json` from a repository secret
 
 ---
 
@@ -163,7 +163,7 @@ Generates `allure-report/` and opens it in the browser.
 .
 ├── .github/
 │   └── workflows/
-│       └── test.yml             # GitHub Actions: builds Docker image, runs tests on push/PR to main
+│       └── ci.yml               # GitHub Actions: Docker Compose job + per-browser matrix against production
 ├── config/
 │   └── env.config.json          # Environment name → base URL mapping
 ├── src/
