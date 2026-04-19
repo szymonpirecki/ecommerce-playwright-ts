@@ -109,8 +109,11 @@ jobs:
           path: gh-pages
         continue-on-error: true
 
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline --save-dev
+
       - name: Generate Allure report
-        uses: simple-elf/allure-report-action@v1
+        uses: simple-elf/allure-report-action@v2
         if: always()
         with:
           allure_results: allure-results-all
