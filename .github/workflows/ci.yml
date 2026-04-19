@@ -131,10 +131,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
-
-      - name: Post report link to summary
-        if: always()
-        run: |
-          echo "## 📊 Allure Report" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔗 [Open Allure Report](https://szymonpirecki.github.io/ecommerce-playwright-ts/)" >> $GITHUB_STEP_SUMMARY
