@@ -152,7 +152,7 @@ jobs:
         continue-on-error: true
 
       - name: Copy traces to output and generate index
-        run: bash scripts/generate-trace-index.sh
+        run: bash .github/workflows/scripts/generate-trace-index.sh
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
