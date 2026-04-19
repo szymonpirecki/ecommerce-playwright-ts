@@ -41,7 +41,7 @@ Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e
 ## Setup
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/szymonpirecki/ecommerce-playwright-ts.git
 cd ecommerce-playwright-ts
 npm ci
 npx playwright install --with-deps
