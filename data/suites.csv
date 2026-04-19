@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","2449","Successful Login Test","webkit","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
+"","1754","Successful Login Test","firefox","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
+"","503","Successful Login Test","chromium","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
