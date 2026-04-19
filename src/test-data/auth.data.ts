@@ -6,11 +6,13 @@ import { Logger } from '../utils/Logger';
 const USERS_PATH = resolve(__dirname, 'users.json');
 const logger = new Logger('AuthData');
 
+type UserRecord = { username: string; password: string; role: string };
+
 export function getUserByRole(role: string): UserCredentials {
-  let users: UserCredentials[];
+  let users: UserRecord[];
 
   try {
-    users = JSON.parse(readFileSync(USERS_PATH, 'utf-8')) as UserCredentials[];
+    users = JSON.parse(readFileSync(USERS_PATH, 'utf-8')) as UserRecord[];
     logger.info('Loaded users.json');
   } catch {
     throw new Error(
@@ -19,14 +21,16 @@ export function getUserByRole(role: string): UserCredentials {
     );
   }
 
-  const user = users.find(u => u.role === role);
-  if (!user) {
+  const pool = users.filter(u => u.role === role);
+  if (pool.length === 0) {
     const available = users.map(u => u.role).join(', ');
     throw new Error(
       `No user with role "${role}" found in users.json. Available roles: ${available}`
     );
   }
 
-  logger.info(`Resolved user for role: ${role}, username: ${user.username}`);
-  return user;
+  const workerIndex = parseInt(process.env['TEST_PARALLEL_INDEX'] ?? '0', 10);
+  const cred = pool[workerIndex % pool.length];
+  logger.info(`Worker ${workerIndex} → pool[${workerIndex % pool.length}] for role: ${role}, username: ${cred.username}`);
+  return cred as UserCredentials;
 }
