@@ -17,7 +17,6 @@ console.log(`Running tests against environment: "${environmentName}" → ${baseU
 
 const reporters: ReporterDescription[] = [
   ['list'],
-  ['html', { open: 'never', outputFolder: 'playwright-report' }],
   ['allure-playwright', {
     outputFolder: 'allure-results',
     environmentInfo: {

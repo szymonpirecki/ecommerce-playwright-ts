@@ -41,12 +41,12 @@ jobs:
           path: allure-results/
           retention-days: 14
 
-      - name: Upload Playwright report
+      - name: Upload traces
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-docker-${{ matrix.browser }}
-          path: playwright-report/
+          name: traces-docker-${{ matrix.browser }}
+          path: test-results/
           retention-days: 14
 
   browser-matrix:
@@ -81,20 +81,20 @@ jobs:
         env:
           TEST_ENV: production
 
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report-${{ matrix.browser }}
-          path: playwright-report/
-          retention-days: 14
-
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.browser }}
           path: allure-results/
+          retention-days: 14
+
+      - name: Upload traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: traces-production-${{ matrix.browser }}
+          path: test-results/
           retention-days: 14
 
   publish-reports:
@@ -112,12 +112,6 @@ jobs:
           pattern: allure-results-*
           path: allure-results-all/
           merge-multiple: true
-
-      - name: Download Playwright reports
-        uses: actions/download-artifact@v4
-        with:
-          pattern: playwright-report-*
-          path: playwright-reports-all/
 
       - name: Get previous gh-pages
         uses: actions/checkout@v4
@@ -142,14 +136,33 @@ jobs:
       - name: Save history for next run
         run: cp -r gh-pages-out/history gh-pages-out/last-history
 
-      - name: Copy Playwright reports into output
+      - name: Download all traces
+        uses: actions/download-artifact@v4
+        with:
+          pattern: traces-*
+          path: traces-all/
+
+      - name: Copy traces to output and generate index
         run: |
-          mkdir -p gh-pages-out/playwright
-          for dir in playwright-reports-all/playwright-report-*/; do
-            name=$(basename "$dir" | sed 's/playwright-report-//')
-            cp -r "$dir" "gh-pages-out/playwright/$name"
+          BASE="https://szymonpirecki.github.io/ecommerce-playwright-ts/traces"
+          VIEWER="https://trace.playwright.dev/?trace="
+          mkdir -p gh-pages-out/traces
+          for dir in traces-all/traces-*/; do
+            name=$(basename "$dir" | sed 's/^traces-//')
+            cp -r "$dir" "gh-pages-out/traces/$name"
           done
-          
+          {
+            echo "<!DOCTYPE html><html><head><meta charset=utf-8><title>Traces</title>"
+            echo "<style>body{font-family:sans-serif;padding:2rem}a{display:block;margin:.25rem 0}</style>"
+            echo "</head><body><h1>Playwright Traces</h1>"
+            find gh-pages-out/traces -name "trace.zip" | sort | while read f; do
+              rel="${f#gh-pages-out/}"
+              label="${rel#traces/}"
+              echo "<a href=\"${VIEWER}${BASE}/${rel}\">${label}</a>"
+            done
+            echo "</body></html>"
+          } > gh-pages-out/traces/index.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: always()
@@ -165,12 +178,5 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Report | Link |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
-          echo "| 📊 Allure (all) | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🎭 Production Chromium | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/playwright/chromium/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🎭 Production Firefox | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/playwright/firefox/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🎭 Production WebKit | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/playwright/webkit/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🐳 Docker Chromium | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/playwright/docker-chromium/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🐳 Docker Firefox | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/playwright/docker-firefox/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🐳 Docker WebKit | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/playwright/docker-webkit/) |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🗂️ [All reports index](https://szymonpirecki.github.io/ecommerce-playwright-ts/reports.html)" >> $GITHUB_STEP_SUMMARY
+          echo "| 📊 Allure | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/) |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🎬 Traces | [Browse](https://szymonpirecki.github.io/ecommerce-playwright-ts/traces/) |" >> $GITHUB_STEP_SUMMARY

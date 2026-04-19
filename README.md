@@ -15,7 +15,6 @@ Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e
 - Traces, screenshots, and videos captured automatically on failure
 
 **Reporting**
-- Playwright HTML report generated after every run
 - Allure report generated after every run
 
 **Environments**
@@ -126,11 +125,6 @@ docker compose up --build --exit-code-from tests
 ---
 
 ## Reports
-
-**Playwright HTML report** (generated after every run):
-```bash
-npx playwright show-report
-```
 
 **Allure report** (requires Java):
 ```bash
