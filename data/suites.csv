@@ -1,4 +1,4 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","343","Successful Login Test","chromium","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
-"","1423","Successful Login Test","firefox","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
-"","1891","Successful Login Test","webkit","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
+"","1471","Successful Login Test","firefox","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
+"","371","Successful Login Test","chromium","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
+"","2154","Successful Login Test","webkit","2026-04-19","passed","2026-04-19","Login Tests","auth/login.spec.ts","",""
