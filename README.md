@@ -26,6 +26,7 @@ Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e
 - App and test runner run as separate Docker Compose services — the app must pass a health check before tests start
 - GitHub Actions pipeline (push/PR to main) runs the same Docker Compose flow, with `users.json` injected from a repository secret
 
+
 ---
 
 ## Prerequisites
