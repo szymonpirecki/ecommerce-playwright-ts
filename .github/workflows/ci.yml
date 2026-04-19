@@ -117,8 +117,12 @@ jobs:
       - name: Merge Allure results
         run: |
           mkdir -p allure-results-all
-          find allure-results-raw -type f | while read -r f; do
-            cp "$f" "allure-results-all/$(basename "$f")"
+          for artifact_dir in allure-results-raw/*/; do
+            artifact=$(basename "$artifact_dir")
+            find "$artifact_dir" -type f | while read -r f; do
+              filename=$(basename "$f")
+              cp "$f" "allure-results-all/${artifact}__${filename}"
+            done
           done
 
       - name: Get previous gh-pages
