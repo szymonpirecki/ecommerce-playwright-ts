@@ -156,7 +156,9 @@ Generates `allure-report/` and opens it in the browser.
 .
 ├── .github/
 │   └── workflows/
-│       └── ci.yml               # GitHub Actions: Docker Compose job + per-browser matrix against production
+│       ├── ci.yml               # GitHub Actions: Docker Compose job + per-browser matrix against production
+│       └── scripts/
+│           └── generate-trace-index.sh  # Builds traces/index.html with trace.playwright.dev links
 ├── config/
 │   └── env.config.json          # Environment name → base URL mapping
 ├── src/
@@ -178,12 +180,13 @@ Generates `allure-report/` and opens it in the browser.
 ├── tests/
 │   └── auth/
 │       └── login.spec.ts        # Login flow tests (@smoke, @auth)
+├── docker/
+│   ├── Dockerfile               # Test runner image (mcr.microsoft.com/playwright base)
+│   └── entrypoint.sh            # Container entrypoint — production pre-flight check + test run
 ├── .dockerignore                # Excludes node_modules, .env, and report dirs from build context
 ├── .env.example                 # Committed env template — copy to .env and fill in
 ├── .gitignore
 ├── docker-compose.yml           # App + test runner services for containerised runs
-├── Dockerfile                   # Test runner image (mcr.microsoft.com/playwright base)
-├── entrypoint.sh                # Container entrypoint — production pre-flight check + test run
 ├── package.json
 ├── playwright.config.ts         # Playwright config: browsers, reporters, timeouts, base URL
 └── tsconfig.json

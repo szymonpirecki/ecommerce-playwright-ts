@@ -11,7 +11,9 @@ services:
       retries: 5
 
   tests:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     environment:
       TEST_ENV: docker
       BROWSER: ${BROWSER:-}

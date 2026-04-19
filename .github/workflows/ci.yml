@@ -48,6 +48,7 @@ jobs:
           name: traces-docker-${{ matrix.browser }}
           path: test-results/
           retention-days: 14
+          if-no-files-found: ignore
 
   browser-matrix:
     name: Production (${{ matrix.browser }})
@@ -96,6 +97,7 @@ jobs:
           name: traces-production-${{ matrix.browser }}
           path: test-results/
           retention-days: 14
+          if-no-files-found: ignore
 
   publish-reports:
     name: Publish Reports
@@ -141,27 +143,10 @@ jobs:
         with:
           pattern: traces-*
           path: traces-all/
+        continue-on-error: true
 
       - name: Copy traces to output and generate index
-        run: |
-          BASE="https://szymonpirecki.github.io/ecommerce-playwright-ts/traces"
-          VIEWER="https://trace.playwright.dev/?trace="
-          mkdir -p gh-pages-out/traces
-          for dir in traces-all/traces-*/; do
-            name=$(basename "$dir" | sed 's/^traces-//')
-            cp -r "$dir" "gh-pages-out/traces/$name"
-          done
-          {
-            echo "<!DOCTYPE html><html><head><meta charset=utf-8><title>Traces</title>"
-            echo "<style>body{font-family:sans-serif;padding:2rem}a{display:block;margin:.25rem 0}</style>"
-            echo "</head><body><h1>Playwright Traces</h1>"
-            find gh-pages-out/traces -name "trace.zip" | sort | while read f; do
-              rel="${f#gh-pages-out/}"
-              label="${rel#traces/}"
-              echo "<a href=\"${VIEWER}${BASE}/${rel}\">${label}</a>"
-            done
-            echo "</body></html>"
-          } > gh-pages-out/traces/index.html
+        run: bash .github/workflows/scripts/generate-trace-index.sh
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -179,4 +164,4 @@ jobs:
           echo "| Report | Link |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
           echo "| 📊 Allure | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🎬 Traces | [Browse](https://szymonpirecki.github.io/ecommerce-playwright-ts/traces/) |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🎬 Traces | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/traces/) |" >> $GITHUB_STEP_SUMMARY

@@ -9,7 +9,7 @@ RUN npm ci
 
 COPY . .
 
-COPY entrypoint.sh /entrypoint.sh
+COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Default to production so a plain `docker run` hits the live site.
