@@ -110,16 +110,19 @@ jobs:
         continue-on-error: true
 
       - name: Install Allure CLI
-        run: npm install -g allure-commandline --save-dev
+        run: npm install -g allure-commandline
+
+      - name: Copy history from previous report
+        run: |
+          if [ -d "gh-pages/last-history" ]; then
+            cp -r gh-pages/last-history allure-results-all/history
+          fi
 
       - name: Generate Allure report
-        uses: simple-elf/allure-report-action@v2
-        if: always()
-        with:
-          allure_results: allure-results-all
-          allure_history: allure-history
-          keep_reports: 20
-          gh_pages: gh-pages
+        run: allure generate allure-results-all --clean -o allure-report
+
+      - name: Save history for next run
+        run: cp -r allure-report/history allure-report/last-history
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -127,4 +130,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: allure-history
+          publish_dir: allure-report
