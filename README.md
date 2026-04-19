@@ -194,4 +194,3 @@ Generates `allure-report/` and opens it in the browser.
 ├── playwright.config.ts         # Playwright config: browsers, reporters, timeouts, base URL
 └── tsconfig.json
 ```
-# ecommerce-playwright-ts
