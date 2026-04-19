@@ -9,4 +9,8 @@ if [ "${TEST_ENV}" = "production" ]; then
   }
 fi
 
-exec npm test
+if [ -n "${BROWSER}" ]; then
+  exec npm test -- --project="${BROWSER}"
+else
+  exec npm test
+fi

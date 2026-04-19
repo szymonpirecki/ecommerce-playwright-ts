@@ -14,8 +14,10 @@ services:
     build: .
     environment:
       TEST_ENV: docker
+      BROWSER: ${BROWSER:-}
     depends_on:
       fashionhub:
         condition: service_healthy
     volumes:
       - ./allure-results:/app/allure-results
+      - ./playwright-report:/app/playwright-report
