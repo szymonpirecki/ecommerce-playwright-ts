@@ -112,8 +112,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: allure-results-*
-          path: allure-results-all/
-          merge-multiple: true
+          path: allure-results-raw/
+
+      - name: Merge Allure results
+        run: |
+          mkdir -p allure-results-all
+          find allure-results-raw -type f | while read -r f; do
+            cp "$f" "allure-results-all/$(basename "$f")"
+          done
 
       - name: Get previous gh-pages
         uses: actions/checkout@v4
@@ -146,7 +152,7 @@ jobs:
         continue-on-error: true
 
       - name: Copy traces to output and generate index
-        run: bash .github/workflows/scripts/generate-trace-index.sh
+        run: bash scripts/generate-trace-index.sh
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
