@@ -1,4 +1,0 @@
-[INFO] [2026-04-19T20:53:54.849Z] [AuthData] Loaded users.json
-[INFO] [2026-04-19T20:53:54.850Z] [AuthData] Worker 0 → pool[0] for role: standard, username: demouser
-[INFO] [2026-04-19T20:53:54.851Z] [Fixtures] Initialising session for role: standard, username: demouser
-[INFO] [2026-04-19T20:53:55.162Z] [Fixtures] Session for role: standard, username: demouser completed
