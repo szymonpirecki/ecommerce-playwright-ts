@@ -8,7 +8,7 @@ Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e
 **Architecture**
 - Page Object Model with `private readonly` locators initialised in constructors
 - Custom Playwright fixture handles credential resolution and page object injection — no `beforeEach`, no `new Page()` in tests
-- Role-based credential system loads users from a JSON file kept outside version control
+- Role-based credential system loads users from a JSON file kept outside version control; each role supports multiple accounts — workers are assigned deterministically by index to prevent session conflicts
 
 **Test execution**
 - Runs across Chromium, Firefox, and WebKit in fully parallel mode
