@@ -63,7 +63,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -177,5 +177,5 @@ jobs:
           echo "| Report | Link |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|------|" >> $GITHUB_STEP_SUMMARY
           echo "| 📊 Allure — Production | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/allure/production/) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 📊 Allure — Docker | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/allure/docker/) |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📊 Allure — Local | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/allure/docker/) |" >> $GITHUB_STEP_SUMMARY
           echo "| 🎬 Traces | [Open](https://szymonpirecki.github.io/ecommerce-playwright-ts/traces/) |" >> $GITHUB_STEP_SUMMARY
