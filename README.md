@@ -15,15 +15,18 @@ Test suite for [Fashionhub](https://pocketaces2.github.io/fashionhub/), a demo e
 - Traces, screenshots, and videos captured automatically on failure
 
 **Reporting**
-- Allure report generated after every run
+- Allure results collected after every run; two separate reports (production + docker/local) and a trace viewer published to GitHub Pages after each CI run
 
 **Environments**
 - Four environments built in: `local`, `docker`, `staging`, `production`
 - Target URL resolved automatically based on the active environment
 
 **Deployment**
+- GitHub Actions pipeline (push/PR to main) runs three jobs:
+  - **`local`** — Docker Compose flow against the local environment, browser matrix (Chromium / Firefox / WebKit), `users.json` injected from a repository secret
+  - **`production`** — per-browser matrix running directly against the production URL, `users.json` injected from a repository secret
+  - **`publish-reports`** — merges Allure results from all runs, generates two separate reports, and deploys them together with a trace viewer to GitHub Pages
 - App and test runner run as separate Docker Compose services — the app must pass a health check before tests start
-- GitHub Actions pipeline (push/PR to main) runs two jobs: Docker Compose flow against the local environment, and a per-browser matrix against production — both inject `users.json` from a repository secret
 
 ---
 
@@ -48,13 +51,17 @@ cp .env.example .env
 cp src/test-data/users.example.json src/test-data/users.json
 ```
 
-`users.json` is the only source of test credentials — fill in real values:
+`users.json` is the only source of test credentials — fill in real values. Add multiple accounts per role so that parallel workers get distinct sessions:
 
 ```json
 [
-  { "username": "your_username", "password": "your_password", "role": "standard" }
+  { "username": "standard_user_1", "password": "your_password", "role": "standard" },
+  { "username": "standard_user_2", "password": "your_password", "role": "standard" },
+  { "username": "admin_user",      "password": "your_password", "role": "admin" }
 ]
 ```
+
+Each worker is assigned an account deterministically by index (`workerIndex % pool.length`), so workers never share a session.
 
 ---
 
@@ -131,6 +138,18 @@ docker compose up --build --exit-code-from tests
 npm run report
 ```
 Generates `allure-report/` and opens it in the browser.
+
+**Published reports (CI only):**
+
+After every CI run the `publish-reports` job deploys to GitHub Pages:
+
+| Report | URL |
+|---|---|
+| Allure — Production | https://szymonpirecki.github.io/ecommerce-playwright-ts/allure/production/ |
+| Allure — Local (Docker) | https://szymonpirecki.github.io/ecommerce-playwright-ts/allure/docker/ |
+| Traces viewer | https://szymonpirecki.github.io/ecommerce-playwright-ts/traces/ |
+
+History (trend graphs) is preserved across runs by copying the previous `history/` directory from the `gh-pages` branch before generating each report.
 
 ---
 
